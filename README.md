@@ -182,7 +182,7 @@ https://git-scm.com/
 ## 1. Clone the project
 
 bash
-git clone https://github.com/YOUR_USERNAME/school-management-system.git
+git clone https://github.com/webX22/school-management-system.git
 
 
 Enter the project:

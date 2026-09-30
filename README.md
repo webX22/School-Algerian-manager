@@ -1,1016 +1,1205 @@
-markdown
-# 🏫 School Management System
+# 🏫 School Algerian Manager
 
 <p align="center">
-  <strong>Modern • Secure • Responsive • Full-Stack</strong>
+  <strong>A complete school management system built with Laravel, MySQL, PHP, JavaScript, and Tailwind CSS.</strong>
 </p>
 
 <p align="center">
-  A complete school management platform for administrators, teachers, students, and parents.
+  Manage administrators, school staff, students, classes, meals, menus, reservations, and school-related operations from one centralized platform.
 </p>
 
 <p align="center">
 
-[![Node.js](https://img.shields.io/badge/Node.js-18%2B-111827?style=for-the-badge&logo=node.js&logoColor=22c55e)](https://nodejs.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14%2B-111827?style=for-the-badge&logo=postgresql&logoColor=60a5fa)](https://www.postgresql.org/)
-[![JavaScript](https://img.shields.io/badge/JavaScript-ES2022-111827?style=for-the-badge&logo=javascript&logoColor=facc15)](https://developer.mozilla.org/)
-[![License](https://img.shields.io/badge/License-MIT-111827?style=for-the-badge)](#-license)
+![Laravel](https://img.shields.io/badge/Laravel-PHP-red?style=for-the-badge\&logo=laravel)
+![PHP](https://img.shields.io/badge/PHP-8.x-777BB4?style=for-the-badge\&logo=php\&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge\&logo=mysql\&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge\&logo=javascript\&logoColor=black)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-UI-06B6D4?style=for-the-badge\&logo=tailwindcss\&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-Build_Tool-646CFF?style=for-the-badge\&logo=vite\&logoColor=white)
+![Git](https://img.shields.io/badge/Git-Version_Control-F05032?style=for-the-badge\&logo=git\&logoColor=white)
+![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge\&logo=github)
 
 </p>
 
 ---
 
-# ✨ Overview
+# 📋 Table of Contents
 
-**School Management System** is a full-stack web application designed to centralize and simplify daily school operations.
-
-It provides dedicated functionality for:
-
-- 👑 Administrators
-- 👨‍🏫 Teachers
-- 🎓 Students
-- 👨‍👩‍👧 Parents
-- 📚 Classes
-- 🕐 Timetables
-- 📊 Grades
-- 📋 Attendance
-- 📝 Assignments
-- 📤 Assignment submissions
-- 🏖️ Leave requests
-- 📢 Announcements
-- 🍽️ School meal management
-- 📁 File management
-- 🖼️ Profile pictures
-- 📈 Reports
-- 🧹 Duties
-- 🛡️ Audit logs
-
-The system uses a **Node.js backend**, **PostgreSQL database**, and a responsive frontend.
+* [📖 About the Project](#-about-the-project)
+* [✨ Features](#-features)
+* [👥 User Roles](#-user-roles)
+* [🔐 Login Pages](#-login-pages)
+* [🛠️ Technologies](#️-technologies)
+* [📁 Project Structure](#-project-structure)
+* [💻 Requirements](#-requirements)
+* [⚙️ Installation](#️-installation)
+* [🗄️ Database Configuration](#️-database-configuration)
+* [👤 Demo Accounts](#-demo-accounts)
+* [🚀 Running the Application](#-running-the-application)
+* [📸 Screenshots](#-screenshots)
+* [🔧 Troubleshooting](#-troubleshooting)
+* [🌐 GitHub Deployment](#-github-deployment)
+* [🔒 Security](#-security)
+* [📌 Development Workflow](#-development-workflow)
+* [📄 License](#-license)
 
 ---
 
-# 💎 Features
+# 📖 About the Project
 
-| Feature | Description |
-|---|---|
-| 🔐 Authentication | Secure login and role-based access |
-| 👑 Admin Dashboard | Complete school administration |
-| 👨‍🏫 Teacher Management | Classes, grades, assignments and attendance |
-| 🎓 Student Portal | Timetable, grades, assignments and profile |
-| 👨‍👩‍👧 Parent Access | Student information and school updates |
-| 📚 Classes | Create and manage school classes |
-| 🕐 Timetable | Manage schedules |
-| 📊 Attendance | Track student attendance |
-| 🎓 Grades | Record and review academic grades |
-| 📝 Assignments | Create and manage assignments |
-| 📤 Submissions | Student assignment submissions |
-| 🏖️ Leave Requests | Submit and manage leave requests |
-| 📢 Announcements | School-wide announcements |
-| 🍽️ Meal System | Menus and meal orders |
-| 💳 Meal Balance | Student meal balance and top-up |
-| 📁 Files | Upload and access files |
-| 🖼️ Profile Pictures | User profile image management |
-| 📈 Reports | Administrative reports |
-| 🧹 Duties | Manage assigned duties |
-| 🛡️ Audit Logs | Track important system actions |
-| 📱 Responsive UI | Desktop, tablet and mobile support |
+**School Algerian Manager** is a web-based school management system designed to centralize and simplify common school administration tasks.
+
+The application provides different dashboards depending on the user's role:
+
+* 👨‍💼 Administrator
+* 🧑‍💼 Gestionnaire / Manager
+* 🎓 Student
+
+Each role receives access to the features and pages appropriate for that account.
+
+The system is designed as a practical Laravel project that can be used for:
+
+* School administration
+* Student management
+* Class management
+* Meal and menu management
+* Food reservations
+* School staff management
+* Student dashboards
+* Administrative dashboards
+* Portfolio demonstration
+* Laravel development practice
 
 ---
 
-# 🖥️ Technology Stack
+# ✨ Features
 
-## Frontend
+## 👨‍💼 Administrator
 
-- HTML5
-- CSS3
-- JavaScript
-- Responsive design
-- Fetch API
+The administrator dashboard provides centralized control over the school system.
 
-## Backend
+Possible administration features include:
 
-- Node.js
-- HTTP server
-- REST-style API
-- Role-based authorization
-- File upload handling
+* Dashboard overview
+* Student management
+* User management
+* School class management
+* Menu management
+* Dish management
+* Meal distribution
+* Reservations
+* Administrative controls
+* System statistics
 
-## Database
+---
 
-- PostgreSQL
-- Automatic initialization
-- Database schema creation
-- Seed/demo data
+## 🧑‍💼 Gestionnaire
+
+The Gestionnaire dashboard is designed for staff members responsible for operational school activities.
+
+Features include:
+
+* Dashboard
+* Student-related management
+* Menu management
+* Dish management
+* Meal distribution
+* Reservations
+* School operations
+
+---
+
+## 🎓 Student
+
+Students have their own dedicated dashboard.
+
+Student functionality includes:
+
+* Student dashboard
+* Personal information
+* School class information
+* Menu information
+* Meal reservations
+* Available school services
+
+---
+
+# 👥 User Roles
+
+The application uses role-based access control.
+
+| Role           | Description                          |
+| -------------- | ------------------------------------ |
+| `admin`        | Full administrative access           |
+| `gestionnaire` | School management/operational access |
+| `eleve`        | Student access                       |
+
+The role is associated with the authenticated user.
+
+The application uses the user's role to determine which dashboard and protected routes they can access.
+
+---
+
+# 🔐 Login Pages
+
+The application provides three separate login areas.
+
+## 👨‍💼 Administrator Login
+
+```text
+http://127.0.0.1:8000/admin/login/
+```
+
+Demo username:
+
+```text
+admin@admin.com
+```
+
+Demo password:
+
+```text
+password123!
+```
+
+---
+
+## 🧑‍💼 Gestionnaire Login
+
+```text
+http://127.0.0.1:8000/gestionnaire/login/
+```
+
+Demo username:
+
+```text
+gst@gst.com
+```
+
+Demo password:
+
+```text
+password123!
+```
+
+---
+
+## 🎓 Student Login
+
+```text
+http://127.0.0.1:8000/eleve/login/
+```
+
+Demo username:
+
+```text
+std@std.com
+```
+
+Demo password:
+
+```text
+password123!
+```
+
+> ⚠️ **Important:** These credentials are intended for local/demo development. Do not use these passwords for a production deployment. If this repository is public, replace them with safe demo credentials or remove the passwords from the README.
+
+---
+
+# 🛠️ Technologies
+
+The project is built using the following technologies.
+
+### Backend
+
+* PHP
+* Laravel
+* Laravel Eloquent ORM
+* Laravel Authentication
+* Laravel Middleware
+* REST-style application routes
+
+### Database
+
+* MySQL
+* SQL
+* Laravel Migrations
+* Eloquent ORM
+
+### Frontend
+
+* HTML5
+* CSS3
+* JavaScript
+* Tailwind CSS
+* Vite
+
+### Development Tools
+
+* Composer
+* npm
+* Git
+* GitHub
+* Visual Studio Code
 
 ---
 
 # 📁 Project Structure
 
+The main project structure looks like this:
 
-school-management-system/
+```text
+School_manager/
+│
+├── app/
+│   ├── Http/
+│   ├── Models/
+│   └── ...
+│
+├── bootstrap/
+│
+├── config/
+│
+├── database/
+│   ├── factories/
+│   ├── migrations/
+│   └── seeders/
+│
+├── Pictures/
+│   ├── Admin dashboard/
+│   │   ├── 1.png
+│   │   ├── 2.png
+│   │   ├── 3.png
+│   │   ├── 4.png
+│   │   ├── 5.png
+│   │   ├── 6.png
+│   │   ├── 7.png
+│   │   └── 8.png
+│   │
+│   ├── Gestionnaire dashboard/
+│   │   ├── 1.png
+│   │   ├── 2.png
+│   │   ├── 3.png
+│   │   ├── 4.png
+│   │   └── 5.png
+│   │
+│   └── Student dashboard/
+│       ├── 1.png
+│       ├── 2.png
+│       └── 3.png
 │
 ├── public/
-│   ├── index.html
-│   ├── login.html
-│   ├── dashboard.html
-│   ├── css/
-│   ├── js/
-│   ├── images/
-│   └── uploads/
+├── resources/
+├── routes/
+├── storage/
+├── tests/
 │
-├── lib/
-│   ├── db.js
-│   ├── core.js
-│   ├── routes_a.js
-│   └── routes_b.js
-│
-├── server.js
-├── seed.js
-├── package.json
-├── package-lock.json
 ├── .env.example
 ├── .gitignore
-└── README.md
-
+├── artisan
+├── composer.json
+├── composer.lock
+├── package.json
+├── package-lock.json
+├── phpunit.xml
+├── tailwind.config.js
+├── postcss.config.js
+└── vite.config.js
+```
 
 ---
 
-# ⚙️ Requirements
+# 💻 Requirements
 
-Before installing the system, install the following.
+Before installing the project, make sure the following software is installed.
+
+## PHP
+
+Check:
+
+```powershell
+php -v
+```
+
+---
+
+## Composer
+
+Check:
+
+```powershell
+composer -V
+```
+
+Composer is required to install Laravel/PHP dependencies.
+
+---
+
+## MySQL
+
+Check that MySQL is installed and running.
+
+You can use:
+
+* MySQL Workbench
+* MySQL Server
+* XAMPP
+* WAMP
+* Another MySQL-compatible environment
+
+---
 
 ## Node.js
 
-Recommended:
+Check:
 
+```powershell
+node -v
+```
 
-Node.js 18+
+---
 
+## npm
 
-Download:
+Check:
 
+```powershell
+npm -v
+```
 
-https://nodejs.org/
-
-
-## PostgreSQL
-
-Recommended:
-
-
-PostgreSQL 14+
-
-
-Download:
-
-
-https://www.postgresql.org/download/
-
+---
 
 ## Git
 
-Download:
+Check:
 
-
-https://git-scm.com/
-
+```powershell
+git --version
+```
 
 ---
 
-# 🚀 Installation — A to Z
+# ⚙️ Installation
 
-## 1. Clone the project
+## 1. Clone the Repository
 
-bash
-git clone https://github.com/webX22/school-management-system.git
+Clone the GitHub repository:
 
+```powershell
+git clone https://github.com/webX22/School-Algerian-manager.git
+```
 
 Enter the project:
 
-bash
-cd school-management-system
+```powershell
+cd School-Algerian-manager
+```
 
+If your local folder is already available, simply open it:
 
----
-
-## 2. Install dependencies
-
-bash
-npm install
-
+```powershell
+cd D:\School-Algerian-manager\School_manager
+```
 
 ---
 
-## 3. Create the PostgreSQL database
-
-Open PostgreSQL or pgAdmin.
-
-Create a database:
-
-sql
-CREATE DATABASE school_management;
-
-
----
-
-# 🔐 4. Configure Environment Variables
-
-Create a `.env` file in the project root.
-
-Example:
-
-env
-PORT=3000
-
-DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/school_management
-
-SESSION_SECRET=CHANGE_THIS_TO_A_LONG_RANDOM_SECRET
-
-
-Example:
-
-env
-PORT=3000
-
-DATABASE_URL=postgresql://postgres:admin123@localhost:5432/school_management
-
-SESSION_SECRET=my-super-secret-school-session-key
-
-
-> ⚠️ **Never upload your real `.env` file to GitHub.**
-
----
-
-# 🗄️ 5. Initialize the Database
+# 2. Install PHP Dependencies
 
 Run:
 
-bash
-npm run seed
+```powershell
+composer install
+```
 
+This installs the packages defined in:
 
-If database initialization is handled automatically by the server, simply start:
+```text
+composer.json
+```
 
-bash
-npm start
+The `vendor/` directory is generated automatically.
 
+> `vendor/` should not normally be uploaded to GitHub.
 
 ---
 
-# ▶️ 6. Start the Application
+# 3. Install JavaScript Dependencies
 
-bash
-npm start
+Run:
 
+```powershell
+npm install
+```
+
+This installs the frontend dependencies from:
+
+```text
+package.json
+```
+
+The `node_modules/` directory is generated automatically.
+
+> `node_modules/` should not normally be uploaded to GitHub.
+
+---
+
+# 4. Create the Environment File
+
+Copy:
+
+```text
+.env.example
+```
+
+to:
+
+```text
+.env
+```
+
+PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Or manually create `.env`.
+
+---
+
+# 5. Generate the Laravel Application Key
+
+Run:
+
+```powershell
+php artisan key:generate
+```
 
 You should see:
 
+```text
+Application key set successfully.
+```
 
-Server running on http://localhost:3000
+---
 
+# 🗄️ Database Configuration
+
+This project uses MySQL.
 
 Open:
 
-
-http://localhost:3000
-
-
----
-
-# 🧪 7. Check JavaScript
-
-Before pushing the project to GitHub:
-
-bash
-npm run check
-
-
-The following files should pass syntax checking:
-
-
-server.js
-lib/db.js
-lib/core.js
-lib/routes_a.js
-lib/routes_b.js
-seed.js
-
-
----
-
-# 👤 Demo Accounts
-
-> ⚠️ These accounts are for local/demo development only.
->
-> Change all passwords before production deployment.
-
-| Role             | Username / Email      | Password     |
-| ---------------- | --------------------- | ------------ |
-| 👑 Administrator | `admin@example.com`   | `admin123`   |
-| 👨‍🏫 Teacher    | `teacher@example.com` | `teacher123` |
-| 🎓 Student       | `student@example.com` | `student123` |
-| 👨‍👩‍👧 Parent  | `parent@example.com`  | `parent123`  |
-
-If your seeded database uses different credentials, check:
-
-
-seed.js
-
-
----
-
-# 🔐 Security
-
-For production, change all demo passwords.
-
-## Demo passwords
-
-
-admin123
-teacher123
-student123
-parent123
-
-
-Use strong passwords instead.
-
-## Change the session secret
-
-env
-SESSION_SECRET=YOUR_LONG_RANDOM_SECRET
-
-
-Generate a long random value for production.
-
-## Never upload
-
-
+```text
 .env
+```
 
-
-to GitHub.
-
----
-
-# 🔌 API
-
-All application API routes use:
-
-
-/api/
-
-
-The routing system correctly extracts the route after `/api/`.
-
----
-
-# 📊 Dashboard
-
-http
-GET /api/dashboard
-
-
----
-
-# 👥 Users
-
-http
-GET /api/users
-
-
----
-
-# 📚 Classes
-
-http
-GET /api/classes
-
-
----
-
-# 🕐 Timetable
-
-http
-GET /api/timetable
-
-
----
-
-# 📋 Attendance
-
-http
-GET /api/attendance
-
-
----
-
-# 🎓 Grades
-
-http
-GET /api/grades
-
-
----
-
-# 📝 Assignments
-
-http
-GET /api/assignments
-
-
----
-
-# 📤 Submissions
-
-http
-GET /api/submissions
-
-
----
-
-# 🏖️ Leave Requests
-
-http
-GET /api/leave-requests
-
-
----
-
-# 📢 Announcements
-
-http
-GET /api/announcements
-
-
----
-
-# 🍽️ Menu
-
-http
-GET /api/menu
-
-
----
-
-# 🍴 Meal Orders
-
-http
-GET /api/meal-orders
-
-
----
-
-# 🖼️ Profile Pictures
-
-http
-GET /api/profile-pic
-
-
----
-
-# 📁 Files
-
-http
-GET /api/files/...
-
-
-Uploaded files are correctly handled through:
-
-
-/api/files/
-
+Configure the database section.
 
 Example:
 
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=madrassati
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-/api/files/avatars/user.jpg
+If your MySQL installation has a password, replace:
 
+```env
+DB_PASSWORD=
+```
 
----
-
-# 📈 Reports
-
-http
-GET /api/reports
-
-
----
-
-# 🧹 Duties
-
-http
-GET /api/duties
-
+with your MySQL password.
 
 ---
 
-# 🛡️ Audit Logs
+# 🔎 Check Database Connection
 
-http
-GET /api/audit-logs
+After configuring `.env`, clear Laravel's cached configuration:
 
+```powershell
+php artisan optimize:clear
+```
+
+Then check migration status:
+
+```powershell
+php artisan migrate:status
+```
+
+If Laravel can communicate with MySQL, it should display the migration information.
 
 ---
 
-# 🛠️ Routing Fix
+# ⚠️ Existing Database
 
-The original version had an important routing problem.
+If you already have an existing database containing the project's tables and data, **do not create another database unnecessarily**.
+
+Configure `.env` to point to the existing database.
 
 For example:
 
+```env
+DB_DATABASE=madrassati
+```
 
-/api/dashboard
+Then:
 
-
-was incorrectly interpreted as:
-
-
-api
-
-
-instead of:
-
-
-dashboard
-
-
-This has been corrected.
-
-The router now correctly handles:
-
-
-/api/dashboard
-/api/users
-/api/classes
-/api/timetable
-/api/attendance
-/api/grades
-/api/assignments
-/api/submissions
-/api/leave-requests/...
-/api/announcements
-/api/menu
-/api/meal-orders
-/api/profile-pic
-/api/files/...
-/api/reports
-/api/duties
-/api/audit-logs
-
+```powershell
+php artisan optimize:clear
+```
 
 ---
 
-# 📁 Uploaded Files
+# 🧱 Creating Database Tables
 
-Uploaded files are served through:
+If you are setting up the project from an empty database, Laravel migrations can create the tables.
 
+Run:
 
-/api/files/...
+```powershell
+php artisan migrate
+```
 
+If the project includes seeders and you want to use them:
 
-Example:
+```powershell
+php artisan db:seed
+```
 
+Or:
 
-/api/files/avatars/example.jpg
+```powershell
+php artisan migrate --seed
+```
 
-
-The `/api/files/` prefix is handled correctly by the server.
-
----
-
-# 🧪 Testing Checklist
-
-Before deployment:
-
-
-☐ npm install
-☐ npm run check
-☐ PostgreSQL connection
-☐ Database initialization
-☐ Login
-☐ Logout
-☐ Admin dashboard
-☐ Teacher dashboard
-☐ Student dashboard
-☐ Parent dashboard
-☐ Users
-☐ Classes
-☐ Timetable
-☐ Attendance
-☐ Grades
-☐ Assignments
-☐ Submissions
-☐ Leave requests
-☐ Announcements
-☐ Menu
-☐ Meal orders
-☐ Profile pictures
-☐ File uploads
-☐ Reports
-☐ Duties
-☐ Audit logs
-
+> ⚠️ Do not run destructive migration commands such as `migrate:fresh` on a database containing important data.
 
 ---
 
-# 🧰 Troubleshooting
+# 🔑 Authentication and Roles
+
+The application uses user roles such as:
+
+```text
+admin
+gestionnaire
+eleve
+```
+
+The role determines which dashboard a user can access.
+
+For example:
+
+```text
+admin
+    ↓
+Admin Dashboard
+
+gestionnaire
+    ↓
+Gestionnaire Dashboard
+
+eleve
+    ↓
+Student Dashboard
+```
+
+---
+
+# 🚀 Running the Application
+
+Laravel's development server can be started with:
+
+```powershell
+php artisan serve
+```
+
+You should get something similar to:
+
+```text
+Server running on [http://127.0.0.1:8000]
+```
+
+Open:
+
+```text
+http://127.0.0.1:8000
+```
+
+---
+
+# 🎨 Running the Frontend
+
+For Vite development:
+
+```powershell
+npm run dev
+```
+
+Keep this terminal running while developing the frontend.
+
+You may need two terminals.
+
+### Terminal 1
+
+```powershell
+php artisan serve
+```
+
+### Terminal 2
+
+```powershell
+npm run dev
+```
+
+---
+
+# 🔐 Login URLs
+
+After starting Laravel:
+
+### Administrator
+
+```text
+http://127.0.0.1:8000/admin/login/
+```
+
+### Gestionnaire
+
+```text
+http://127.0.0.1:8000/gestionnaire/login/
+```
+
+### Student
+
+```text
+http://127.0.0.1:8000/eleve/login/
+```
+
+---
+
+# 📸 Screenshots
+
+The screenshots below are stored directly inside the repository.
+
+---
+
+# 👨‍💼 Admin Dashboard
+
+## Admin Screenshot 1
+
+<p align="center">
+  <img src="./Pictures/Admin%20dashboard/1.png" width="90%" alt="Admin Dashboard Screenshot 1">
+</p>
+
+## Admin Screenshot 2
+
+<p align="center">
+  <img src="./Pictures/Admin%20dashboard/2.png" width="90%" alt="Admin Dashboard Screenshot 2">
+</p>
+
+## Admin Screenshot 3
+
+<p align="center">
+  <img src="./Pictures/Admin%20dashboard/3.png" width="90%" alt="Admin Dashboard Screenshot 3">
+</p>
+
+## Admin Screenshot 4
+
+<p align="center">
+  <img src="./Pictures/Admin%20dashboard/4.png" width="90%" alt="Admin Dashboard Screenshot 4">
+</p>
+
+## Admin Screenshot 5
+
+<p align="center">
+  <img src="./Pictures/Admin%20dashboard/5.png" width="90%" alt="Admin Dashboard Screenshot 5">
+</p>
+
+## Admin Screenshot 6
+
+<p align="center">
+  <img src="./Pictures/Admin%20dashboard/6.png" width="90%" alt="Admin Dashboard Screenshot 6">
+</p>
+
+## Admin Screenshot 7
+
+<p align="center">
+  <img src="./Pictures/Admin%20dashboard/7.png" width="90%" alt="Admin Dashboard Screenshot 7">
+</p>
+
+## Admin Screenshot 8
+
+<p align="center">
+  <img src="./Pictures/Admin%20dashboard/8.png" width="90%" alt="Admin Dashboard Screenshot 8">
+</p>
+
+---
+
+# 🧑‍💼 Gestionnaire Dashboard
+
+## Gestionnaire Screenshot 1
+
+<p align="center">
+  <img src="./Pictures/Gestionnaire%20dashboard/1.png" width="90%" alt="Gestionnaire Dashboard Screenshot 1">
+</p>
+
+## Gestionnaire Screenshot 2
+
+<p align="center">
+  <img src="./Pictures/Gestionnaire%20dashboard/2.png" width="90%" alt="Gestionnaire Dashboard Screenshot 2">
+</p>
+
+## Gestionnaire Screenshot 3
+
+<p align="center">
+  <img src="./Pictures/Gestionnaire%20dashboard/3.png" width="90%" alt="Gestionnaire Dashboard Screenshot 3">
+</p>
+
+## Gestionnaire Screenshot 4
+
+<p align="center">
+  <img src="./Pictures/Gestionnaire%20dashboard/4.png" width="90%" alt="Gestionnaire Dashboard Screenshot 4">
+</p>
+
+## Gestionnaire Screenshot 5
+
+<p align="center">
+  <img src="./Pictures/Gestionnaire%20dashboard/5.png" width="90%" alt="Gestionnaire Dashboard Screenshot 5">
+</p>
+
+---
+
+# 🎓 Student Dashboard
+
+## Student Screenshot 1
+
+<p align="center">
+  <img src="./Pictures/Student%20dashboard/1.png" width="90%" alt="Student Dashboard Screenshot 1">
+</p>
+
+## Student Screenshot 2
+
+<p align="center">
+  <img src="./Pictures/Student%20dashboard/2.png" width="90%" alt="Student Dashboard Screenshot 2">
+</p>
+
+## Student Screenshot 3
+
+<p align="center">
+  <img src="./Pictures/Student%20dashboard/3.png" width="90%" alt="Student Dashboard Screenshot 3">
+</p>
+
+---
+
+# 🔧 Troubleshooting
+
+## `vendor/autoload.php` does not exist
+
+Run:
+
+```powershell
+composer install
+```
+
+---
+
+## `php` is not recognized
+
+PHP is not available in your system PATH.
+
+Verify:
+
+```powershell
+php -v
+```
+
+If it fails, install PHP or add the PHP installation directory to Windows PATH.
+
+---
+
+## `composer` is not recognized
+
+Verify:
+
+```powershell
+composer -V
+```
+
+Install Composer if necessary.
+
+---
+
+## `npm` is not recognized
+
+Verify:
+
+```powershell
+node -v
+npm -v
+```
+
+Install Node.js if necessary.
+
+---
+
+## Laravel uses SQLite instead of MySQL
+
+Check `.env`.
+
+Make sure:
+
+```env
+DB_CONNECTION=mysql
+```
+
+and not:
+
+```env
+DB_CONNECTION=sqlite
+```
+
+Then run:
+
+```powershell
+php artisan optimize:clear
+```
+
+---
 
 ## Database connection error
 
 Check:
 
-env
-DATABASE_URL
+```env
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-
-Example:
-
-env
-DATABASE_URL=postgresql://postgres:password@localhost:5432/school_management
-
-
-Make sure PostgreSQL is running.
+Make sure MySQL is running.
 
 ---
 
-## Port already in use
+## Table does not exist
 
-Change:
+Check migration status:
 
-env
-PORT=3000
+```powershell
+php artisan migrate:status
+```
 
+If using a new empty database:
 
-to:
-
-env
-PORT=3001
-
-
-Then open:
-
-
-http://localhost:3001
-
+```powershell
+php artisan migrate
+```
 
 ---
 
-## `npm install` fails
+## Changes to `.env` are not working
+
+Laravel may have cached configuration.
+
+Run:
+
+```powershell
+php artisan optimize:clear
+```
+
+Then restart the Laravel server:
+
+```powershell
+php artisan serve
+```
+
+---
+
+## Vite is not working
 
 Try:
 
-bash
-npm cache clean --force
-
-
-Then:
-
-bash
+```powershell
 npm install
-
-
----
-
-## JavaScript syntax error
-
-Run:
-
-bash
-npm run check
-
-
-Or check an individual file:
-
-bash
-node --check server.js
-
-
----
-
-## API returns 404
-
-Make sure the server is running.
-
-Test:
-
-
-http://localhost:3000/api/dashboard
-
-
-All API routes use:
-
-
-/api/
-
-
----
-
-# 🐙 Push to GitHub
-
-## 1. Create a GitHub repository
-
-Go to:
-
-
-https://github.com/new
-
-
-Create:
-
-
-school-management-system
-
-
-Do not upload `.env`.
-
----
-
-## 2. Open the project
-
-bash
-cd school-management-system
-
-
----
-
-## 3. Initialize Git
-
-bash
-git init -b main
-
-
----
-
-## 4. Add files
-
-bash
-git add .
-
-
----
-
-## 5. Commit
-
-bash
-git commit -m "Initial school management system"
-
-
----
-
-## 6. Connect GitHub
-
-Replace `YOUR_USERNAME`:
-
-bash
-git remote add origin https://github.com/YOUR_USERNAME/school-management-system.git
-
-
----
-
-## 7. Push
-
-bash
-git push -u origin main
-
-
----
-
-# 🔄 Updating GitHub
-
-After making changes:
-
-bash
-npm run check
-
+```
 
 Then:
 
-bash
+```powershell
+npm run dev
+```
+
+---
+
+# 🌐 GitHub Deployment
+
+After making changes to the project:
+
+Check the status:
+
+```powershell
+git status
+```
+
+Add changes:
+
+```powershell
 git add .
+```
 
+Create a commit:
 
-Commit:
-
-bash
+```powershell
 git commit -m "Update school management system"
+```
 
+Push:
 
-Finally:
-
-bash
+```powershell
 git push
-
+```
 
 ---
 
-# 🧹 Recommended `.gitignore`
+# 📌 Git Workflow
 
-Create or verify `.gitignore`:
+A simple development workflow is:
 
-gitignore
-node_modules/
+```text
+1. Edit project
+       ↓
+2. Test locally
+       ↓
+3. git status
+       ↓
+4. git add .
+       ↓
+5. git commit
+       ↓
+6. git push
+       ↓
+7. GitHub updated
+```
 
+Example:
+
+```powershell
+git status
+
+git add .
+
+git commit -m "Improve student dashboard"
+
+git push
+```
+
+---
+
+# 🔒 Security
+
+Never upload your real `.env` file.
+
+Your `.gitignore` should contain:
+
+```gitignore
 .env
-.env.*
-!.env.example
+/vendor/
+/node_modules/
+```
 
-uploads/*
-!uploads/.gitkeep
+The `.env` file can contain:
 
-*.log
+* Database passwords
+* API keys
+* Application secrets
+* Credentials
+* Environment-specific configuration
 
-.DS_Store
-Thumbs.db
+Therefore:
 
+```text
+.env
+```
 
----
+should remain local.
 
-# 📦 Recommended `.env.example`
+The repository should contain:
 
-Create:
-
-
+```text
 .env.example
+```
 
-
-with:
-
-env
-PORT=3000
-
-DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/school_management
-
-SESSION_SECRET=CHANGE_ME
-
-
-This allows other developers to understand which environment variables are required without exposing your private credentials.
+instead.
 
 ---
 
-# 🧑‍💻 Development Workflow
+# 📦 Important GitHub Files
 
-Start from the project directory:
+The following files should normally be committed:
 
-bash
-cd school-management-system
+```text
+composer.json
+composer.lock
+package.json
+package-lock.json
+artisan
+.env.example
+.gitignore
+README.md
+```
 
+Generated dependency directories should normally not be committed:
 
-Install dependencies:
-
-bash
-npm install
-
-
-Check syntax:
-
-bash
-npm run check
-
-
-Start the server:
-
-bash
-npm start
-
-
-Open:
-
-
-http://localhost:3000
-
-
-Make your changes.
-
-Run:
-
-bash
-npm run check
-
-
-Then:
-
-bash
-git add .
-git commit -m "Update application"
-git push
-
+```text
+vendor/
+node_modules/
+```
 
 ---
 
-# 🌐 Production Checklist
+# 🧪 Testing
 
-Before publishing the application:
+Laravel testing can be executed using:
 
+```powershell
+php artisan test
+```
 
-☐ Change every demo password
-☐ Generate a strong SESSION_SECRET
-☐ Configure production PostgreSQL
-☐ Configure production DATABASE_URL
-☐ Enable HTTPS
-☐ Protect environment variables
-☐ Do not expose .env
-☐ Do not expose database credentials
-☐ Test authentication
-☐ Test every role
-☐ Test every API route
-☐ Test file uploads
-☐ Test database backups
-☐ Test mobile responsiveness
-☐ Run npm run check
+Or:
 
+```powershell
+./vendor/bin/phpunit
+```
 
 ---
 
-# 🤝 Contributing
+# 🏗️ Production Build
 
-Contributions are welcome.
+Before deploying the frontend:
 
-## 1. Fork the repository
+```powershell
+npm run build
+```
 
-bash
-git clone https://github.com/YOUR_USERNAME/school-management-system.git
+This creates the production frontend assets.
 
-
-## 2. Create a branch
-
-bash
-git checkout -b feature/my-feature
-
-
-## 3. Make your changes
-
-Implement your feature or fix.
-
-## 4. Check the code
-
-bash
-npm run check
-
-
-## 5. Commit
-
-bash
-git add .
-git commit -m "Add new feature"
-
-
-## 6. Push
-
-bash
-git push origin feature/my-feature
-
-
-## 7. Open a Pull Request
-
-Open a Pull Request on GitHub and describe your changes.
+Do not use development commands as your production server configuration without appropriate deployment setup.
 
 ---
 
-# 📜 License
+# 📊 Application Architecture
 
-This project is released under the **MIT License**.
+A simplified view of the application:
 
-You are free to:
-
-* Use the software
-* Modify the software
-* Distribute the software
-* Use it commercially
-
-Subject to the conditions of the MIT License.
+```text
+                    SCHOOL ALGERIAN MANAGER
+                              │
+             ┌────────────────┼────────────────┐
+             │                │                │
+          ADMIN          GESTIONNAIRE       ELEVE
+             │                │                │
+             ▼                ▼                ▼
+       Admin Dashboard  Manager Dashboard  Student Dashboard
+             │                │                │
+             └────────────────┼────────────────┘
+                              │
+                              ▼
+                        Laravel Backend
+                              │
+                    ┌─────────┴─────────┐
+                    │                   │
+                 Eloquent             Routes
+                    │                   │
+                    └─────────┬─────────┘
+                              │
+                              ▼
+                           MySQL
+```
 
 ---
 
-# ⭐ Support
+# 🎯 Project Goals
 
-If you find this project useful:
+This project demonstrates practical experience with:
 
-⭐ Star the repository
-
-🐛 Report bugs
-
-💡 Suggest features
-
-🤝 Contribute improvements
+* Laravel application development
+* PHP backend development
+* MySQL database integration
+* Authentication
+* Role-based authorization
+* Eloquent ORM
+* Laravel migrations
+* MVC architecture
+* JavaScript
+* Tailwind CSS
+* Vite
+* Git
+* GitHub
+* Responsive dashboard development
+* School management workflows
 
 ---
+
+# 🚀 Future Improvements
+
+Potential future improvements include:
+
+* 📱 Improved mobile responsiveness
+* 📊 Advanced statistics
+* 📈 Analytics dashboard
+* 🔔 Notifications
+* 📧 Email notifications
+* 📄 PDF reports
+* 📥 Excel export
+* 🔎 Advanced search and filtering
+* 👤 Improved user profile management
+* 🔐 Additional security controls
+* 🌍 Multi-language support
+* ☁️ Production deployment
+* 🧪 Expanded automated testing
+
+---
+
+# 👨‍💻 Developer
+
+**Elhadri Allal**
+
+Full-Stack Web Developer
+
+### GitHub
+
+https://github.com/webX22
+
+### LinkedIn
+
+https://www.linkedin.com/in/allaldsgnr/
+
+### Portfolio
+
+https://hadriallalportfolio.netlify.app/
+
+---
+
+# 📄 License
+
+This project is provided for educational, portfolio, and development purposes.
+
+If you intend to use this project commercially, review and define an appropriate license and verify the licensing requirements of all third-party dependencies.
+
+---
+
+# ⭐ Project
+
+If you find this project useful or interesting, consider giving the repository a ⭐ on GitHub.
 
 <p align="center">
-
-<strong>🏫 School Management System</strong>
-
-<br>
-
-<em>Built for modern school administration.</em>
-
-<br><br>
-
-⭐ Made with Node.js • PostgreSQL • HTML • CSS • JavaScript ⭐
-
+  <strong>School Algerian Manager</strong>
+  <br>
+  Laravel • MySQL • PHP • JavaScript • Tailwind CSS
 </p>
-
-
-
-If this project is useful to you, configure `DONATION_URL` in `.env` to display the Donate button and point it to your preferred donation/support page.
-#   S c h o o l - A l g e r i a n - m a n a g e r -  
- 

@@ -1,6 +1,30 @@
-node_modules/
-.env
-uploads/*
-!uploads/.gitkeep
+# Laravel
+/vendor/
+/.env
+/public/build/
+/storage/*.key
+
+# Laravel generated files
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+
+# Node
+/node_modules/
 npm-debug.log*
+
+# Uploads
+/uploads/*
+!/uploads/.gitkeep
+
+# Testing
+.phpunit.result.cache
+
+# IDE
+.vscode/
+.idea/
+
+# OS
 .DS_Store
+Thumbs.db

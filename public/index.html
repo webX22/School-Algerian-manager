@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>School Management System</title>
+<style>
+:root{--bg:#f5f6fa;--fg:#1c2033;--card:#fff;--mut:#6b7186;--bd:#e3e6ee;--pri:#4f46e5;--ok:#16a34a;--bad:#dc2626}
+[data-t=dark]{--bg:#0f1220;--fg:#e8eaf3;--card:#181c2e;--mut:#9aa1ba;--bd:#2a3050;--pri:#818cf8}
+*{box-sizing:border-box}body{margin:0;font:15px system-ui,sans-serif;background:var(--bg);color:var(--fg)}
+button{background:var(--pri);color:#fff;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;font:inherit}button:disabled{opacity:.4}
+.b2{background:transparent;color:var(--fg);border:1px solid var(--bd)}.bd{background:var(--bad)}.bg{background:var(--ok)}.sm{padding:4px 9px;font-size:13px;margin-right:4px}
+input,select,textarea{width:100%;padding:8px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--fg);font:inherit}
+label{display:block;margin:10px 0 0;font-size:13px;color:var(--mut)}label>*{margin-top:4px}
+#app{display:flex;min-height:100vh}aside{width:230px;background:var(--card);border-right:1px solid var(--bd);padding:14px;position:sticky;top:0;height:100vh;overflow:auto;flex-shrink:0}
+aside h1{font-size:17px;margin:0 0 14px}aside a{display:block;padding:9px 11px;border-radius:8px;color:var(--fg);text-decoration:none;cursor:pointer;margin-bottom:2px}
+aside a.on,aside a:hover{background:var(--pri);color:#fff}
+.top{display:flex;align-items:center;gap:10px;padding:12px 22px;border-bottom:1px solid var(--bd);background:var(--card)}.top .sp{flex:1}
+.top img,.av{width:32px;height:32px;border-radius:50%;object-fit:cover;background:var(--bd)}
+#wrap{flex:1;min-width:0}#main{padding:22px;max-width:1150px}h2{margin:0 0 16px}h3{margin:22px 0 8px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:8px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px}.card small{color:var(--mut);display:block}.card b{font-size:24px}
+.tw{overflow-x:auto;background:var(--card);border:1px solid var(--bd);border-radius:12px}table{width:100%;border-collapse:collapse}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--bd);white-space:nowrap;font-size:14px}th{color:var(--mut);font-weight:600;text-transform:capitalize}
+.bar{display:flex;gap:8px;margin:10px 0}.bar input{max-width:280px}.bar select{max-width:200px}.pg{display:flex;gap:10px;align-items:center;margin-top:8px;color:var(--mut);font-size:13px}
+.tag{padding:2px 8px;border-radius:99px;font-size:12px;background:var(--bd)}.tag.approved,.tag.paid,.tag.present,.tag.done,.tag.served{background:#16a34a33;color:var(--ok)}.tag.rejected,.tag.absent{background:#dc262633;color:var(--bad)}.tag.pending,.tag.late,.tag.todo{background:#f59e0b33;color:#d97706}
+.modal{position:fixed;inset:0;background:#0009;display:flex;align-items:center;justify-content:center;padding:14px;z-index:50}.modal form{background:var(--card);border-radius:14px;padding:22px;width:100%;max-width:440px;max-height:92vh;overflow:auto}
+.row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+#toasts{position:fixed;bottom:16px;right:16px;z-index:99}.toast{background:var(--ok);color:#fff;padding:10px 16px;border-radius:8px;margin-top:8px}.toast.err{background:var(--bad)}
+.login{max-width:380px;margin:8vh auto;background:var(--card);padding:26px;border-radius:14px;border:1px solid var(--bd)}.demo button{margin:4px 4px 0 0}
+.mut{color:var(--mut)}.ann{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:10px}#mb{display:none}
+.grid td,.grid th{white-space:normal;min-width:110px}
+@media(max-width:800px){aside{position:fixed;z-index:40;left:-240px;transition:.2s}aside.open{left:0}#mb{display:inline-block}#main{padding:14px}}
+@media print{aside,.top,button,.bar{display:none!important}}
+</style></head><body><script src="/config.js"></script>
+<div id="root"></div><div id="toasts"></div>
+<script>
+const $=s=>document.querySelector(s),API="/api",APP_CONFIG=window.APP_CONFIG||{};
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let T=localStorage.sms_t,ME=null,H={},P={};
+document.documentElement.dataset.t=localStorage.sms_theme||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+function toast(m,e){const d=document.createElement("div");d.className="toast"+(e?" err":"");d.textContent=m;$("#toasts").append(d);setTimeout(()=>d.remove(),3500)}
+async function api(p,o={}){const r=await fetch(API+p,{method:o.method||"GET",headers:{"Content-Type":"application/json",...(T?{Authorization:"Bearer "+T}:{})},body:o.body?JSON.stringify(o.body):undefined});
+ const d=await r.json().catch(()=>({}));if(!r.ok){if(r.status==401&&ME){logout(true)}throw new Error(d.error||r.statusText)}return d}
+const money=v=>"$"+Number(v||0).toFixed(2),tag=s=>`<span class="tag ${esc(s)}">${esc(s)}</span>`;
+const card=(l,v)=>`<div class=card><small>${esc(l)}</small><b>${esc(v)}</b></div>`;
+const tdate=d=>{const n=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"].indexOf(d);if(n<0)return new Date().toISOString().slice(0,10);const t=new Date();t.setDate(t.getDate()+(n-t.getDay()+7)%7);return t.toISOString().slice(0,10)};
+const file=f=>new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result.split(",")[1]);r.onerror=no;r.readAsDataURL(f)});
+const opts=(a,k="id",l="name")=>a.map(o=>[o[k],o[l]]);
+
+function table(rows,cols,fk){
+ const s={q:"",f:"",p:0},box=document.createElement("div"),vals=fk?[...new Set(rows.map(r=>r[fk]))].filter(Boolean):[];
+ box.innerHTML=`<div class=bar><input placeholder="Search…">${fk?`<select><option value="">All ${fk.replace(/_/g," ")}</option>${vals.map(v=>`<option>${esc(v)}</option>`).join("")}</select>`:""}</div><div class=body></div>`;
+ const body=box.querySelector(".body");
+ const draw=()=>{const r=rows.filter(o=>(!s.q||JSON.stringify(Object.values(o)).toLowerCase().includes(s.q))&&(!s.f||o[fk]==s.f)),n=Math.max(1,Math.ceil(r.length/8));s.p=Math.min(s.p,n-1);
+  body.innerHTML=`<div class=tw><table><thead><tr>${cols.map(c=>`<th>${c[1]}</th>`).join("")}</tr></thead><tbody>${r.slice(s.p*8,s.p*8+8).map(o=>`<tr>${cols.map(c=>`<td>${c[2]?c[2](o):esc(o[c[0]])}</td>`).join("")}</tr>`).join("")||`<tr><td colspan=${cols.length}>No records</td></tr>`}</tbody></table></div><div class=pg><button class=b2 ${s.p?"":"disabled"}>‹</button><span>Page ${s.p+1} of ${n} · ${r.length} rows</span><button class=b2 ${s.p<n-1?"":"disabled"}>›</button></div>`;
+  const [a,b]=body.querySelectorAll(".pg button");a.onclick=()=>{s.p--;draw()};b.onclick=()=>{s.p++;draw()}};
+ box.querySelector("input").oninput=e=>{s.q=e.target.value.toLowerCase();s.p=0;draw()};
+ const sel=box.querySelector("select");if(sel)sel.onchange=e=>{s.f=e.target.value;s.p=0;draw()};
+ draw();return box}
+const autoCols=r=>Object.keys(r[0]||{}).map(k=>[k,k.replace(/_/g," ")]);
+
+function form(title,fields,cb,init={}){
+ const m=document.createElement("div");m.className="modal";
+ m.innerHTML=`<form><h3 style="margin-top:0">${title}</h3>${fields.map(([n,l,t,o,at=""])=>{const rq=/optional/.test(at)?"":"required",a=at.replace("optional","");
+  const i=t=="select"?`<select name=${n} ${rq}>${(o||[]).map(([v,x])=>`<option value="${esc(v)}">${esc(x)}</option>`).join("")}</select>`:t=="textarea"?`<textarea name=${n} rows=3 ${rq}></textarea>`:`<input name=${n} type=${t||"text"} ${rq} ${a}>`;
+  return `<label>${l}${i}</label>`}).join("")}<div class=row><button type=button class=b2>Cancel</button><button>Save</button></div></form>`;
+ document.body.append(m);const f=m.querySelector("form");
+ Object.entries(init).forEach(([k,v])=>{const e=f.elements[k];if(e&&e.type!="file"&&e.type!="password"&&v!=null)e.value=v});
+ f.querySelector(".b2").onclick=()=>m.remove();
+ f.onsubmit=async e=>{e.preventDefault();const d={};
+  for(const el of f.elements){if(!el.name)continue;if(el.type=="file"){if(el.files[0]){d.data=await file(el.files[0]);d.filename=el.files[0].name;d.contentType=el.files[0].type}}else if(el.value!=="")d[el.name]=el.type=="number"?Number(el.value):el.value}
+  try{await cb(d);m.remove()}catch(er){toast(er.message,1)}}}
+
+function show(t,...c){const m=$("#main");m.innerHTML=`<h2>${t}</h2>`;c.forEach(x=>typeof x==="string"?m.insertAdjacentHTML("beforeend",x):x&&m.append(x))}
+const reload=()=>go(cur);let cur="dash";
+const NAV={
+ headmaster:[["dash","Dashboard"],["users","Users"],["academics","Classes & Timetable"],["leave","Leave Requests"],["ann","Announcements"],["menu","Cafeteria Menu"],["orders","Meal Orders"],["reports","Financial Reports"],["duties","Staff Duties"],["audit","Audit Logs"]],
+ teacher:[["dash","Dashboard"],["att","Attendance"],["grades","Grades"],["report","Report Cards"],["assign","Assignments"],["subs","Submissions"],["pay","Payslips"],["leave","Leave"],["ann","Announcements"]],
+ student:[["dash","Dashboard"],["tt","Timetable"],["grades","Grades"],["report","Report Card"],["att","Attendance"],["assign","Assignments"],["cafe","Cafeteria"],["ann","Announcements"]],
+ staff:[["dash","Dashboard"],["duties","My Duties"],["pay","Payslips"],["leave","Leave"],["ann","Announcements"]]};
+
+function renderLogin(){
+ $("#root").innerHTML=`<form class=login id=lf><h2>🏫 School Management</h2><label>Email<input name=email type=email required></label><label>Password<input name=password type=password required minlength=6></label><div class=row style="justify-content:space-between"><button type=button class=b2 id=th>🌓</button><button>Sign in</button></div><p class=mut style="margin-top:18px">Demo accounts (password: <b>password123</b>)</p><div class=demo>${[["head","Headmaster"],["t1","Teacher"],["s1","Student"],["cafe","Cafeteria staff"],["library","Librarian"],["security","Security"]].map(([e,l])=>`<button type=button class="b2 sm" data-e="${e}@school.test">${l}</button>`).join("")}</div></form>`;
+ const f=$("#lf");$("#th").onclick=theme;
+ f.querySelectorAll("[data-e]").forEach(b=>b.onclick=()=>{f.email.value=b.dataset.e;f.password.value="password123"});
+ f.onsubmit=async e=>{e.preventDefault();const b=f.querySelector(".row button:last-child");b.disabled=1;b.textContent="Signing in…";
+  try{const r=await api("/login",{method:"POST",body:{email:f.email.value,password:f.password.value}});T=r.token;localStorage.sms_t=T;await boot()}catch(er){toast(er.message,1);b.disabled=0;b.textContent="Sign in"}}}
+function theme(){const d=document.documentElement;d.dataset.t=d.dataset.t=="dark"?"light":"dark";localStorage.sms_theme=d.dataset.t}
+async function logout(q){try{await api("/logout",{method:"POST"})}catch(e){}T=null;ME=null;localStorage.removeItem("sms_t");renderLogin();if(!q)toast("Signed out")}
+async function boot(){
+ if(!T)return renderLogin();
+ try{ME=(await api("/me")).user}catch(e){T=null;return renderLogin()}
+ const nav=[...NAV[ME.role]];if(ME.role=="staff"&&ME.dept=="Cafeteria")nav.splice(2,0,["menu","Cafeteria Menu"],["orders","Meal Orders"]);
+ $("#root").innerHTML=`<div id=app><aside id=sb><h1>🏫 ${esc(ME.role=="headmaster"?"Headmaster":ME.role[0].toUpperCase()+ME.role.slice(1))} Portal</h1>${nav.map(([k,l])=>`<a data-k=${k}>${l}</a>`).join("")}</aside><div id=wrap><div class=top><button class=b2 id=mb>☰</button><span class=sp></span><button class="b2 sm" id=th2>🌓</button>${APP_CONFIG.donationUrl?`<a class="b2 sm" href="${esc(APP_CONFIG.donationUrl)}" target="_blank" rel="noopener noreferrer">☕ Donate</a>`:""}${ME.profile_pic?`<img src="${esc(ME.profile_pic)}">`:`<div class=av></div>`}<a href=# id=me style="color:inherit">${esc(ME.name)}</a><button class="b2 sm" id=lo>Logout</button></div><div id=main></div></div></div>`;
+ document.querySelectorAll("aside a").forEach(a=>a.onclick=()=>{$("#sb").classList.remove("open");go(a.dataset.k)});
+ $("#mb").onclick=()=>$("#sb").classList.toggle("open");$("#th2").onclick=theme;$("#lo").onclick=()=>logout();
+ $("#me").onclick=e=>{e.preventDefault();form("My profile",[["name","Name"],["password","New password (optional)","password",0,"minlength=6 optional"],["data","Profile picture","file",0,"accept=image/* optional"]],async d=>{if(d.data)await api("/profile-pic",{method:"POST",body:d});await api("/users/"+ME.id,{method:"PUT",body:{name:d.name,password:d.password}});toast("Profile updated");boot()},ME)};
+ go("dash")}
+async function go(k){cur=k;document.querySelectorAll("aside a").forEach(a=>a.classList.toggle("on",a.dataset.k==k));$("#main").innerHTML="<p class=mut>Loading…</p>";try{await P[k]()}catch(e){toast(e.message,1);$("#main").innerHTML=`<p class=mut>${esc(e.message)}</p>`}}
+const del=(url,msg,then)=>async id=>{if(confirm(msg)){await api(url+id,{method:"DELETE"});toast("Deleted");then()}};
+
+P.dash=async()=>{const d=await api("/dashboard"),t=d.table;show("Dashboard",`<div class=cards>${d.cards.map(c=>card(...c)).join("")}</div>`,t?`<h3>${esc(t[0])}</h3>`:"",t&&t[1].length?table(t[1],autoCols(t[1])):"<p class=mut>Nothing to show yet.</p>")};
+P.users=async()=>{const [us,mt]=await Promise.all([api("/users"),api("/meta")]);
+ H.del=del("/users/","Delete this user and all their data?",reload);
+ H.edit=id=>{const u=us.find(x=>x.id==id);form("Edit user",[["name","Name"],["email","Email","email"],["password","New password (optional)","password",0,"minlength=6 optional"],["salary","Salary (staff/teachers)","number",0,"optional min=0"]],async d=>{await api("/users/"+id,{method:"PUT",body:d});toast("User updated");reload()},u)};
+ H.add=()=>form("Add user",[["role","Role","select",[["student","Student"],["teacher","Teacher"],["staff","Staff"]]],["name","Full name"],["email","Email","email"],["password","Password","password",0,"minlength=6"],["class_id","Class (students)","select",[["","—"],...opts(mt.classes)],"optional"],["roll_no","Roll no.","number",0,"optional min=1"],["department","Department (staff)","text",0,"optional"],["role_title","Job title (staff)","text",0,"optional"],["salary","Salary","number",0,"optional min=0"]],async d=>{await api("/users",{method:"POST",body:d});toast("User created");reload()});
+ show("Users",`<button onclick="H.add()">+ Add user</button>`,table(us,[["name","Name"],["email","Email"],["role","Role"],["class","Class"],["role_title","Title"],["salary","Salary",r=>r.salary?money(r.salary):""],["id","Actions",r=>`<button class="sm b2" onclick="H.edit(${r.id})">Edit</button><button class="sm bd" onclick="H.del(${r.id})">Delete</button>`]],"role"))};
+P.academics=async()=>{const [mt,tt]=await Promise.all([api("/meta"),api("/timetable")]);
+ H.cls=()=>form("New class",[["name","Class name"]],async d=>{await api("/classes",{method:"POST",body:d});toast("Class added");reload()});
+ H.sub=()=>form("New subject",[["name","Subject name"]],async d=>{await api("/subjects",{method:"POST",body:d});toast("Subject added");reload()});
+ H.slot=()=>form("Timetable slot",[["class_id","Class","select",opts(mt.classes)],["day","Day","select",["Monday","Tuesday","Wednesday","Thursday","Friday"].map(d=>[d,d])],["period","Period","number",0,"min=1 max=10"],["subject_id","Subject","select",opts(mt.subjects)],["teacher_id","Teacher","select",[["","—"],...opts(mt.teachers)],"optional"]],async d=>{await api("/timetable",{method:"POST",body:d});toast("Timetable updated");reload()});
+ show("Classes & Timetable",`<button onclick="H.cls()">+ Class</button> <button class=b2 onclick="H.sub()">+ Subject</button> <button class=b2 onclick="H.slot()">+ Timetable slot</button><h3>Classes</h3><p>${mt.classes.map(c=>`<span class=tag>${esc(c.name)} · Section A</span>`).join(" ")}</p><h3>Subjects</h3><p>${mt.subjects.map(c=>`<span class=tag>${esc(c.name)}</span>`).join(" ")}</p><h3>Timetable</h3>`,table(tt,[["class","Class"],["day","Day"],["period","Period"],["subject","Subject"],["teacher","Teacher"]],"class"))};
+P.tt=async()=>{const r=await api("/timetable"),D=["Monday","Tuesday","Wednesday","Thursday","Friday"],ps=[...new Set(r.map(x=>x.period))].sort();
+ show("Timetable",`<div class=tw><table class=grid><thead><tr><th>Period</th>${D.map(d=>`<th>${d}</th>`).join("")}</tr></thead><tbody>${ps.map(p=>`<tr><th>${p}</th>${D.map(d=>{const c=r.find(x=>x.day==d&&x.period==p);return `<td>${c?`<b>${esc(c.subject)}</b><br><span class=mut>${esc(c.teacher||"")}</span>`:""}</td>`}).join("")}</tr>`).join("")}</tbody></table></div>`)};
+P.leave=async()=>{const r=await api("/leave-requests"),adm=ME.role=="headmaster";
+ H.dec=async(id,s)=>{await api(`/leave-requests/${id}/approve`,{method:"PUT",body:{status:s}});toast("Leave "+s);reload()};
+ H.apply=()=>form("Apply for leave",[["from_date","From","date"],["to_date","To","date"],["reason","Reason","textarea"]],async d=>{if(d.to_date<d.from_date)throw new Error("End date must be after start date");await api("/leave-requests",{method:"POST",body:d});toast("Leave request submitted");reload()});
+ show(adm?"Leave Requests":"My Leave",adm?"":`<button onclick="H.apply()">+ Apply for leave</button>`,table(r,[["applicant","Applicant"],["role","Role"],["from_date","From"],["to_date","To"],["reason","Reason"],["status","Status",x=>tag(x.status)],...(adm?[["id","Action",x=>x.status=="pending"?`<button class="sm bg" onclick="H.dec(${x.id},'approved')">Approve</button><button class="sm bd" onclick="H.dec(${x.id},'rejected')">Reject</button>`:""]]:[])],"status"))};
+P.ann=async()=>{const r=await api("/announcements");
+ H.post=()=>form("New announcement",[["title","Title"],["body","Message","textarea"],["audience","Audience","select",[["all","Everyone"],["teacher","Teachers"],["student","Students"],["staff","Staff"]]]],async d=>{await api("/announcements",{method:"POST",body:d});toast("Announcement posted");reload()});
+ show("Announcements",ME.role=="headmaster"?`<button onclick="H.post()">+ Post announcement</button><br><br>`:"",r.map(a=>`<div class=ann><b>${esc(a.title)}</b> <span class=tag>${esc(a.audience)}</span><p>${esc(a.body)}</p><small class=mut>${esc(a.date)} · ${esc(a.author||"")}</small></div>`).join("")||"<p class=mut>No announcements.</p>")};
+P.menu=async()=>{const r=await api("/menu");
+ H.rm=del("/menu/","Remove this item?",reload);
+ H.price=id=>form("Update price",[["price","New price","number",0,"min=0 step=0.1"]],async d=>{await api("/menu/"+id,{method:"PUT",body:d});toast("Price updated");reload()});
+ H.addm=()=>form("Add menu item",[["name","Name"],["day","Day","select",["Monday","Tuesday","Wednesday","Thursday","Friday"].map(d=>[d,d])],["category","Category","select",[["Main","Main"],["Snack","Snack"],["Drink","Drink"]]],["price","Price","number",0,"min=0 step=0.1"]],async d=>{await api("/menu",{method:"POST",body:d});toast("Item added");reload()});
+ show("Cafeteria Menu",`<button onclick="H.addm()">+ Add item</button>`,table(r,[["day","Day"],["name","Item"],["category","Category"],["price","Price",x=>money(x.price)],["id","Actions",x=>`<button class="sm b2" onclick="H.price(${x.id})">Price</button><button class="sm bd" onclick="H.rm(${x.id})">Remove</button>`]],"day"))};
+P.orders=async()=>{const r=await api("/meal-orders");H.serve=async id=>{await api("/meal-orders/"+id,{method:"PUT",body:{status:"served"}});toast("Marked served");reload()};
+ show("Meal Orders",table(r,[["date","Date"],["student","Student"],["item","Item"],["price","Price",x=>money(x.price)],["status","Status",x=>tag(x.status)],["id","",x=>x.status=="pending"?`<button class="sm bg" onclick="H.serve(${x.id})">Serve</button>`:""]],"status"))};
+P.reports=async()=>{const r=await api("/reports"),s=r.summary;
+ H.exp=()=>form("Record expense",[["description","Description"],["amount","Amount","number",0,"min=0.01 step=0.01"]],async d=>{await api("/expenses",{method:"POST",body:d});toast("Expense recorded");reload()});
+ show("Financial Reports",`<div class=cards>${card("Fees collected",money(s.fees_collected))}${card("Fees pending",money(s.fees_pending))}${card("Salaries paid",money(s.salaries_paid))}${card("Expenses",money(s.expenses))}${card("Meal top-ups",money(s.meal_topups))}${card("Net (fees+top-ups−salaries−expenses)",money(+s.fees_collected+ +s.meal_topups-s.salaries_paid-s.expenses))}</div><h3>Expenses</h3><button onclick="H.exp()">+ Record expense</button>`,table(r.expenses,[["date","Date"],["description","Description"],["amount","Amount",x=>money(x.amount)]]))};
+P.audit=async()=>show("Audit Logs",table(await api("/audit-logs"),[["at","When"],["user","User"],["action","Action"]]));
+P.duties=async()=>{const [r,us]=await Promise.all([api("/duties"),ME.role=="headmaster"?api("/users?role=staff"):[]]);
+ H.duty=async(id,s)=>{await api("/duties/"+id,{method:"PUT",body:{status:s}});toast("Duty updated");reload()};
+ H.newd=()=>form("Assign duty",[["user_id","Staff member","select",opts(us)],["title","Duty"],["day","Day","text",0,"optional"]],async d=>{await api("/duties",{method:"POST",body:d});toast("Duty assigned");reload()});
+ show(ME.role=="headmaster"?"Staff Duties":"My Duties",ME.role=="headmaster"?`<button onclick="H.newd()">+ Assign duty</button>`:"",table(r,[["assignee","Staff"],["title","Duty"],["day","When"],["status","Status",x=>tag(x.status)],["id","",x=>x.status=="done"?`<button class="sm b2" onclick="H.duty(${x.id},'todo')">Reopen</button>`:`<button class="sm bg" onclick="H.duty(${x.id},'done')">Mark done</button>`]],"status"))};
+P.pay=async()=>{const r=await api("/payslips");show("Payslip History",table(r,[["month","Month"],["employee","Employee"],["amount","Amount",x=>money(x.amount)],["status","Status",x=>tag(x.status)]],"status"))};
+
+P.att=async()=>{
+ if(ME.role=="student"){const r=await api("/attendance"),p=r.filter(x=>x.status=="present").length;return show("My Attendance",`<div class=cards>${card("Attendance",r.length?Math.round(100*p/r.length)+"%":"–")}${card("Days present",p)}${card("Days absent",r.filter(x=>x.status=="absent").length)}</div>`,table(r,[["date","Date"],["status","Status",x=>tag(x.status)]],"status"))}
+ const mt=await api("/meta");show("Mark Attendance",`<div class=bar><select id=ac>${mt.classes.map(c=>`<option value=${c.id}>${esc(c.name)}</option>`).join("")}</select><input type=date id=ad value="${new Date().toISOString().slice(0,10)}"><button id=al>Load class</button></div><div id=ar></div>`);
+ $("#al").onclick=async()=>{const st=await api("/users?role=student&class_id="+$("#ac").value),ex=await api(`/attendance?class_id=${$("#ac").value}&date=${$("#ad").value}`);
+  $("#ar").innerHTML=`<div class=tw><table><tr><th>Roll</th><th>Student</th><th>Status</th></tr>${st.map(s=>`<tr><td>${s.roll_no||""}</td><td>${esc(s.name)}</td><td><select data-s=${s.id}>${["present","absent","late"].map(v=>`<option ${(ex.find(e=>e.student_id==s.id)||{}).status==v?"selected":""}>${v}</option>`).join("")}</select></td></tr>`).join("")||"<tr><td colspan=3>No students in this class</td></tr>"}</table></div><br><button id=as>Save attendance</button>`;
+  $("#as").onclick=async()=>{await api("/attendance",{method:"POST",body:{date:$("#ad").value,records:[...document.querySelectorAll("[data-s]")].map(e=>({student_id:+e.dataset.s,status:e.value}))}});toast("Attendance saved")}};$("#al").click()};
+P.grades=async()=>{const r=await api("/grades");let extra="";
+ if(ME.role!="student"){const [st,mt]=await Promise.all([api("/users?role=student"),api("/meta")]);
+  H.grade=()=>form("Enter / update grade",[["student_id","Student","select",opts(st)],["subject_id","Subject","select",opts(mt.subjects)],["exam_type","Exam type","select",["Quiz","Midterm","Final"].map(x=>[x,x])],["marks","Marks (0-100)","number",0,"min=0 max=100 step=0.5"]],async d=>{await api("/grades",{method:"POST",body:d});toast("Grade saved");reload()});extra=`<button onclick="H.grade()">+ Enter grade</button>`}
+ show(ME.role=="student"?"My Grades":"Grades",extra,table(r,[...(ME.role=="student"?[]:[["student","Student"]]),["subject","Subject"],["exam_type","Exam"],["marks","Marks"]],"exam_type"))};
+P.report=async()=>{let sid="";if(ME.role!="student"){const st=await api("/users?role=student");sid=(await new Promise(ok=>{show("Report Cards",`<label style="max-width:320px">Student<select id=rs>${st.map(s=>`<option value=${s.id}>${esc(s.name)}</option>`).join("")}</select></label><br><button id=rg>Generate</button><div id=rc></div>`);$("#rg").onclick=()=>ok($("#rs").value)}))}
+ const r=await api("/grades"+(sid?"?student_id="+sid:"")),ex=[...new Set(r.map(x=>x.exam_type))],L=v=>v>=90?"A":v>=80?"B":v>=70?"C":v>=60?"D":"F";
+ const html=`<h3>${esc(r[0]?r[0].student:ME.name)} — Report Card</h3>${ex.map(e=>{const g=r.filter(x=>x.exam_type==e),av=g.reduce((s,x)=>s+ +x.marks,0)/g.length;return `<h3>${esc(e)}</h3><div class=tw><table><tr><th>Subject</th><th>Marks</th><th>Grade</th></tr>${g.map(x=>`<tr><td>${esc(x.subject)}</td><td>${x.marks}</td><td>${L(x.marks)}</td></tr>`).join("")}<tr><th>Average</th><th>${av.toFixed(1)}</th><th>${L(av)}</th></tr></table></div>`}).join("")||"<p class=mut>No grades recorded yet.</p>"}<br><button onclick="print()">🖨 Print</button>`;
+ if(sid)$("#rc").innerHTML=html;else show("My Report Card",html)};
+P.assign=async()=>{const r=await api("/assignments"),stu=ME.role=="student";let extra="";
+ H.sub=id=>form("Submit homework",[["data","File","file",0,"required"]],async d=>{await api("/submissions",{method:"POST",body:{...d,assignment_id:id}});toast("Submitted!");reload()});
+ if(!stu){const mt=await api("/meta");H.newa=()=>form("New assignment",[["title","Title"],["description","Description","textarea",0,"optional"],["class_id","Class","select",opts(mt.classes)],["due_date","Due date","date"]],async d=>{await api("/assignments",{method:"POST",body:d});toast("Assignment created");reload()});extra=`<button onclick="H.newa()">+ New assignment</button>`}
+ show("Assignments",extra,table(r,[["title","Title"],["class","Class"],["teacher","Teacher"],["due_date","Due"],...(stu?[["submitted","Status",x=>x.submitted?`${tag("done")} <a href="${esc(x.submitted)}" target=_blank>file</a>`:tag("todo")],["id","",x=>`<button class=sm onclick="H.sub(${x.id})">${x.submitted?"Resubmit":"Submit"}</button>`]]:[])],"class"))};
+P.subs=async()=>{const r=await api("/submissions");H.gr=id=>form("Grade submission",[["grade","Grade (0-100)","number",0,"min=0 max=100"]],async d=>{await api("/submissions/"+id,{method:"PUT",body:d});toast("Graded");reload()});
+ show("Submissions",table(r,[["assignment","Assignment"],["student","Student"],["submitted_at","Submitted"],["file_url","File",x=>`<a href="${esc(x.file_url)}" target=_blank>Download</a>`],["grade","Grade",x=>x.grade??tag("pending")],["id","",x=>`<button class=sm onclick="H.gr(${x.id})">Grade</button>`]]))};
+P.cafe=async()=>{const [menu,orders,bal]=await Promise.all([api("/menu"),api("/meal-orders"),api("/balance")]),D=["Monday","Tuesday","Wednesday","Thursday","Friday"];
+ H.top=()=>form("Top up meal balance",[["amount","Amount ($)","number",0,"min=1 max=500 step=1"]],async d=>{const r=await api("/meal-topup",{method:"POST",body:d});toast("New balance "+money(r.balance));reload()});
+ H.ord=async(id,day)=>{try{const r=await api("/meal-orders",{method:"POST",body:{menu_item_id:id,date:tdate(day)}});toast("Pre-ordered! Balance "+money(r.balance));reload()}catch(e){toast(e.message,1)}};
+ show("Cafeteria",`<div class=cards>${card("Meal balance",money(bal.meal_balance))}</div><button onclick="H.top()">+ Top up</button><h3>Weekly menu</h3><div class=cards>${D.map(d=>`<div class=card><b style="font-size:16px">${d}</b>${menu.filter(m=>m.day==d).map(m=>`<p style="margin:8px 0">${esc(m.name)} <span class=mut>${money(m.price)}</span><br><button class=sm onclick="H.ord(${m.id},'${d}')">Pre-order</button></p>`).join("")}</div>`).join("")}</div><h3>My orders</h3>`,table(orders,[["date","Date"],["item","Item"],["price","Price",x=>money(x.price)],["status","Status",x=>tag(x.status)]],"status"))};
+boot();
+</script></body></html>

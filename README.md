@@ -1012,3 +1012,5 @@ If you find this project useful:
 
 
 If this project is useful to you, configure `DONATION_URL` in `.env` to display the Donate button and point it to your preferred donation/support page.
+#   S c h o o l - A l g e r i a n - m a n a g e r -  
+ 
